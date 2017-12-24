@@ -8,3 +8,7 @@ form{
     max-width: 100%;
     flex-wrap: wrap;
 }
+
+img{
+    max-width: 100%;
+}

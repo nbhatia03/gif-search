@@ -10,7 +10,7 @@ function addButton(term){
         var newBtn = $('<button>')
         .text(term)
         .addClass('btn')
-        .attr('data-name', term);
+        .attr('data-name', term)
         $('#buttons').append(newBtn);
     }
 
@@ -34,11 +34,32 @@ function updateDom(response){
         var imgSrc = gif.images.fixed_height_still.url;
         var newDiv = $('<div>')
         newDiv.addClass('gif')
-        .append('<img src="' + imgSrc + '"/>') //change to fixed_height onClick
+        .attr('data-playing', '')
+        .attr('data-still', imgSrc)
+        .attr('data-play', gif.images.fixed_height.url)
+        .append('<img src="' + imgSrc + '"/>'); //change to fixed_height onClick
         $('#gifs').append(newDiv)
     }
         
     );
 }
 
+function gifClick(){
+    var gif = $(this).children('img');
+    var isPlaying = $(this).attr('data-playing');
+    var play = $(this).attr('data-play');
+    var stop = $(this).attr('data-still')
+    if(isPlaying){
+        //stop gif
+        $(this).attr('data-playing', '');
+        gif.attr('src', stop)
+    }else{
+        //play gif
+        $(this).attr('data-playing', 'playing');
+        gif.attr('src', play);
+    }
+    
+}
+
 $('#buttons').on('click', '.btn', buttonClick);
+$('#gifs').on('click', '.gif', gifClick);
