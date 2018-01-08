@@ -20,7 +20,7 @@ function buttonClick(){
 
     var searchTerm = $(this).attr('data-name');
     var limit = 10;
-    var url = "https://api.giphy.com/v1/gifs/search?q="+ searchTerm + "&api_key=SUKDMODfO0RfDFQmemfkqV6EeKBCtnjK&rating=r&limit=" + limit
+    var url = "https://api.giphy.com/v1/gifs/search?q="+ searchTerm + "&api_key=SUKDMODfO0RfDFQmemfkqV6EeKBCtnjK&rating=pg-13&limit=" + limit
     $.get(url).done(function(response){
         console.log(response);
         updateDom(response);
