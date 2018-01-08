@@ -19,8 +19,8 @@ function addButton(term){
 function buttonClick(){
 
     var searchTerm = $(this).attr('data-name');
-    var limit = 5;
-    var url = "http://api.giphy.com/v1/gifs/search?q="+ searchTerm + "&api_key=SUKDMODfO0RfDFQmemfkqV6EeKBCtnjK&rating+R&limit=" + limit
+    var limit = 10;
+    var url = "http://api.giphy.com/v1/gifs/search?q="+ searchTerm + "&api_key=SUKDMODfO0RfDFQmemfkqV6EeKBCtnjK&rating=r&limit=" + limit
     $.get(url).done(function(response){
         console.log(response);
         updateDom(response);
@@ -31,14 +31,22 @@ function updateDom(response){
     $('#gifs').empty();
     var objArray = response.data
     objArray.forEach(function(gif){
+
         var imgSrc = gif.images.fixed_height_still.url;
         var newDiv = $('<div>')
+        var overlay = $('<div class="overlay">')
+        
+        overlay.append('<div class=play-pause> &#9658 </div>')
+        .append('<div class=rating>' + gif.rating.toUpperCase() + '</div>');
+    
         newDiv.addClass('gif')
         .attr('data-playing', '')
         .attr('data-still', imgSrc)
         .attr('data-play', gif.images.fixed_height.url)
-        .append('<img src="' + imgSrc + '"/>'); //change to fixed_height onClick
-        $('#gifs').append(newDiv)
+        .append('<img src="' + imgSrc + '"/>')
+        .append(overlay); //change to fixed_height onClick
+        
+        $('#gifs').append(newDiv);
     }
         
     );
@@ -61,5 +69,33 @@ function gifClick(){
     
 }
 
+function showOverlay(){ //this will refer to the gif clicked
+    var gif = $(this);
+    gif.children('.overlay').css('visibility', 'visible');
+    gif.children('img').css('opacity', 0.3);
+    showPlayPause(gif);
+}
+
+function hideOverlay(){
+    $(this).children('.overlay').css('visibility', 'hidden');
+    $(this).children('img').css('opacity', 1);
+}
+
+function showPlayPause(gif){
+    var play = '\u25B6';
+    var stop = '\u25A0';
+    ;
+    if(gif.attr('data-playing')){
+        gif.children('.overlay').children('.play-pause').text(stop)
+    }else{
+        gif.children('.overlay').children('.play-pause').text(play)
+    }
+}
+
 $('#buttons').on('click', '.btn', buttonClick);
 $('#gifs').on('click', '.gif', gifClick);
+
+//overlay events
+$('#gifs').on('click', '.gif', hideOverlay);
+$('#gifs').on('mouseenter', '.gif', showOverlay);
+$('#gifs').on('mouseleave', '.gif', hideOverlay);
