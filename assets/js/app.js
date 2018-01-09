@@ -1,10 +1,17 @@
+//add pre-made buttons to the DOM
+function addPremadeButtons(){
+    var btns = ['surprised', 'disgruntled', 'happy'];
+    btns.forEach(addButton);
+}
+
+//onSubmit of the form
 function submitFunc(){
     event.preventDefault();
     var searchTerm = $('#searchBar').val().trim()
     
     addButton(searchTerm);
 }
-
+//add button to the DOM
 function addButton(term){
     if(term){
         var newBtn = $('<button>')
@@ -13,9 +20,9 @@ function addButton(term){
         .attr('data-name', term)
         $('#buttons').append(newBtn);
     }
-
 }
 
+//when a button is clicked, fetch gifs
 function buttonClick(){
 
     var searchTerm = $(this).attr('data-name');
@@ -27,6 +34,7 @@ function buttonClick(){
     })
 }
 
+//update DOM with gifs
 function updateDom(response){
     $('#gifs').empty();
     var objArray = response.data
@@ -52,6 +60,7 @@ function updateDom(response){
     );
 }
 
+//play or pause gifs when clicked
 function gifClick(){
     var gif = $(this).children('img');
     var isPlaying = $(this).attr('data-playing');
@@ -81,16 +90,18 @@ function hideOverlay(){
     $(this).children('img').css('opacity', 1);
 }
 
+//determines whether overlay will have a play or stop icon
 function showPlayPause(gif){
     var play = '\u25B6';
     var stop = '\u25A0';
-    ;
     if(gif.attr('data-playing')){
         gif.children('.overlay').children('.play-pause').text(stop)
     }else{
         gif.children('.overlay').children('.play-pause').text(play)
     }
 }
+
+addPremadeButtons();
 
 $('#buttons').on('click', '.btn', buttonClick);
 $('#gifs').on('click', '.gif', gifClick);
