@@ -93,7 +93,7 @@ function hideOverlay(){
 //determines whether overlay will have a play or stop icon
 function showPlayPause(gif){
     var play = '\u25B6';
-    var stop = '\u25A0';
+    var stop = '\u25fc';
     if(gif.attr('data-playing')){
         gif.children('.overlay').children('.play-pause').text(stop)
     }else{
